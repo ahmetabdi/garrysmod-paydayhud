@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"				"PaydayHUD"
+	"version"			"1.00"
+	"up_date"			"28/12/13"
+	"author_name"			"greenarrow"
+	"author_email"			""
+	"author_url"			""
+	"info"				""
+	"override"			"0"
+}
