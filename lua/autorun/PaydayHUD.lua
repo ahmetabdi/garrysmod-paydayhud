@@ -8,7 +8,7 @@ if SERVER then
 	resource.AddSingleFile( "materials/paydayhud/paydayhud_armor_small.png" )
 else
 
-	hook.Add("PostGamemodeLoaded", "FC_HUD", function()
+	hook.Add("HUDPaint", "FC_HUD", function()
 
 		FC_HUD = {}
 
@@ -297,7 +297,7 @@ else
 			--HEALTH Cricle
 			if LocalPlayer():Alive() then
 				--Fake grey behind
-				local parts = NiceUV(x - 250, y - 67, 64, 64, 360, 0, 100 / 100 * 360, true )
+				local parts = NiceUV(x - wwwwwwwwwww50, y - 67, 64, 64, 360, 0, 100 / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigHP )
 				surface.SetDrawColor( 0, 0, 0, 125 )
 				surface.DrawPoly(parts)
