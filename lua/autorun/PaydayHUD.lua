@@ -5,10 +5,16 @@ if SERVER then
 	resource.AddSingleFile( "materials/paydayhud/paydayhud_health_small.png" )
 	resource.AddSingleFile( "materials/paydayhud/paydayhud_armor.png" )
 	resource.AddSingleFile( "materials/paydayhud/paydayhud_armor_small.png" )
+	resource.AddSingleFile( "materials/paydayhud/paydayhud_armor_large.png" )
+	resource.AddSingleFile( "materials/paydayhud/paydayhud_armor2.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_fireselector.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_progress_active.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_progress_bg.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_health.png" )
 
 	for _, v in pairs( player.GetAll() ) do
 	 if ( v:Armor() == 0 ) then
-	 v:SetArmor( 100 )
+	 v:SetArmor( 50 )
 	 end
 	end
 
@@ -49,6 +55,13 @@ else
 	FC_HUD.BigHP = Material("paydayhud/paydayhud_health.png")
 	FC_HUD.SmallAR = Material("paydayhud/paydayhud_armor_small.png")
 	FC_HUD.BigAR = Material("paydayhud/paydayhud_armor.png")
+	FC_HUD.ExtraBigAR = Material("paydayhud/paydayhud_armor_large.png")
+	FC_HUD.BigTestAR = Material("paydayhud/paydayhud_armor2.png")
+
+	FC_HUD.ProgressActive = Material("paydayhud/hud_progress_active.png")
+	FC_HUD.ProgressBG = Material("paydayhud/hud_progress_bg.png")
+
+	FC_HUD.BigHP = Material("paydayhud/hud_health.png")
 
 	FC_HUD.LastHP = nil
 	FC_HUD.HPFallout = {}
@@ -263,20 +276,26 @@ else
 				local clip, max, inv, invmax = GetAmmoForCurrentWeapon()
 
 				if clip != -1 then
-					draw.RoundedBoxEx(2, x - 205, y - 115, 120, 30, Color(0,0,0,125), false, true, false, true)
 
-					local col1, col2 = Color(255,255,255,200), Color(255,255,255,200)
+					draw.RoundedBoxEx(2, x - 185, y - 110, 120, 47, Color(0,0,0,150), false, true, false, true)
+					draw.RoundedBoxEx(2, x - 185, y - 57, 120, 47, Color(0,0,0,150), false, true, false, true)
+
+					draw.RoundedBoxEx(2, x - 60, y - 40, 50, 30, Color(0,0,0,150), false, true, false, true)
+					draw.RoundedBoxEx(2, x - 60, y - 75, 50, 30, Color(0,0,0,150), false, true, false, true)
+					draw.RoundedBoxEx(2, x - 60, y - 110, 50, 30, Color(0,0,0,150), false, true, false, true)
+
+					local col1, col2 = Color(255,255,255,255), Color(255,255,255,255)
 
 					if clip == 0 then
-						col1 = Color(200,20,20,200)
+						col1 = Color(215,82,83,255)
 					elseif clip/max <= 0.25 then
-						col1 = Color(200,200,20,200)
+						col1 = Color(219,224,70,255)
 					end
 
 					if inv == 0 then
-						col2 = Color(200,20,20,200)
+						col2 = Color(200,20,20,255)
 					elseif inv/invmax <= 0.25 then
-						col2 = Color(200,200,20,200)
+						col2 = Color(200,200,20,255)
 					end
 
 					if clip < 10 then
@@ -287,13 +306,15 @@ else
 						inv = "0"..inv
 					end
 
-					draw.SimpleText("+", "FC_HUD_30", x - 155, y - 100, Color(255,255,255,200), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-					draw.SimpleText(clip, "FC_HUD_30", x - 155 - 8, y - 100, col1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-					draw.SimpleText(inv, "FC_HUD_30", x - 155 + 10, y - 100, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+					draw.SimpleText(clip, "FC_HUD_30", x - 140 - 8, y - 88, col1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+					draw.SimpleText(inv, "FC_HUD_30", x - 140 + 10, y - 88, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 					surface.SetMaterial( FC_HUD.White )
 
 				end
 			end
+
+			--Weapon one square
+
 
 			--Player Name Circle and Name
 			local tab = CreateBorderedCircle(x - 275, y - 130, 12, 12, 100, 0, 10)
@@ -306,31 +327,31 @@ else
 			surface.SetMaterial( FC_HUD.White )
 			DrawCorrectFuckingPoly(tab)
 
-			draw.RoundedBoxEx(2, x - 260, y - 140, 150, 20, Color(0,0,0,125), false, true, false, true)
-			draw.SimpleText(LocalPlayer():Nick(), "FC_HUD_20", x - 185, y - 132, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.RoundedBoxEx(2, x - 260, y - 140, 150, 20, Color(0,0,0,150), false, true, false, true)
+			draw.SimpleText(LocalPlayer():Nick(), "FC_HUD_20", x - 175, y - 131, color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
 			--HEALTH Cricle
 			if LocalPlayer():Alive() then
 				--Fake grey behind
-				local parts = NiceUV(x - 250, y - 67, 64, 64, 360, 0, 100 / 100 * 360, true )
+				local parts = NiceUV(x - 250, y - 60, 64, 64, 360, 0, 100 / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigHP )
 				surface.SetDrawColor( 0, 0, 0, 125 )
 				surface.DrawPoly(parts)
-				local parts = NiceUV(x - 250, y - 67, 64, 64, math.Clamp(LocalPlayer():Health(), 0, 100) / 100 * 360, true )
+				local parts = NiceUV(x - 250, y - 60, 64, 64, math.Clamp(LocalPlayer():Health(), 0, 100) / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigHP )
-				surface.SetDrawColor( 160, 217, 104, 245 )
+				surface.SetDrawColor( 255, 255, 255, 255 )
 				surface.DrawPoly(parts)
 			end
 
 			--ARMOUR Circle
 			if LocalPlayer():Alive() && LocalPlayer():Armor() > 0 then
 				--Fake grey behind
-				local parts = NiceUV(x - 250, y - 67, 74, 74, 360, 0, 100 / 100 * 360, true )
-				surface.SetMaterial( FC_HUD.BigAR )
+				local parts = NiceUV(x - 250, y - 60, 92, 92, 360, 0, 100 / 100 * 360, true )
+				surface.SetMaterial( FC_HUD.BigTestAR )
 				surface.SetDrawColor( 0, 0, 0, 125 )
 				surface.DrawPoly(parts)
-				local parts = NiceUV(x - 250, y - 67, 74, 74, math.Clamp(LocalPlayer():Armor(), 0, 100) / 100 * 360, true )
-				surface.SetMaterial( FC_HUD.BigAR )
+				local parts = NiceUV(x - 250, y - 60, 92, 92, math.Clamp(LocalPlayer():Armor(), 0, 100) / 100 * 360, true )
+				surface.SetMaterial( FC_HUD.BigTestAR )
 				surface.SetDrawColor(255, 255, 255, 200)
 				surface.DrawPoly(parts)
 			end
@@ -339,17 +360,19 @@ else
 			-- draw.SimpleText(LocalPlayer():Health(), "FC_HUD_40", x - 250, y - 67, Color(255,255,255,200), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 			--test
-			local visible_entity = LocalPlayer():GetEyeTrace().Entity
-			local distance_from_object = 85
-			local player_to_entity_distance = LocalPlayer():GetPos():Distance(visible_entity:GetPos())
+			if LocalPlayer():Alive() then
+				local visible_entity = LocalPlayer():GetEyeTrace().Entity
+				local distance_from_object = 85
+				local player_to_entity_distance = LocalPlayer():GetPos():Distance(visible_entity:GetPos())
 
-			if ( input.IsKeyDown( KEY_F ) || input.IsKeyDown( KEY_E ) ) and ( visible_entity:GetClass() == 'payday_duffle_bag') and ( player_to_entity_distance < distance_from_object) then
-				local parts = NiceUV((ScrW())/2, ScrH()/2, 128, 128, 360, 0, 100 / 100 * 360, true )
-				surface.SetMaterial( FC_HUD.BigHP )
-				surface.SetDrawColor(255, 255, 255, 25)
-				surface.DrawPoly(parts)
+				if ( input.IsKeyDown( KEY_F ) || input.IsKeyDown( KEY_E ) ) and ( visible_entity:GetClass() == 'payday_duffle_bag') and ( player_to_entity_distance < distance_from_object) then
+					local parts = NiceUV((ScrW())/2, ScrH()/2, 128, 128, 360, 0, 100 / 100 * 360, true )
+					surface.SetMaterial( FC_HUD.ProgressActive )
+					surface.SetDrawColor(255, 255, 255, 255)
+					surface.DrawPoly(parts)
+				end
 			end
-			--
+				--
 
 		end
 
