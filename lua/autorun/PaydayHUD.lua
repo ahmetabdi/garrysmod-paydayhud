@@ -34,6 +34,8 @@ else
 	-- CONFIG START --
 	------------------
 
+	local USE_SPEED = 2.5
+
 	FC_HUD.TeamBasedHP = false
 	FC_HUD.DefaultTargetInfo = false
 	FC_HUD.LargerStatus = false
@@ -260,6 +262,8 @@ else
 	  return ammo_clip, ammo_max, ammo_inv, ammo_invmax
 	end
 
+	local usekeybag = 0
+
 	hook.Add("HUDPaint", "FC_HUD", function()
 
 		GAMEMODE.HUDPaint = function()
@@ -313,22 +317,19 @@ else
 				end
 			end
 
-			--Weapon one square
-
-
 			--Player Name Circle and Name
-			local tab = CreateBorderedCircle(x - 275, y - 130, 12, 12, 100, 0, 10)
+			local tab = CreateBorderedCircle(x - 275, y - 135, 12, 12, 100, 0, 10)
 			surface.SetDrawColor( 0, 0, 0, 125 )
 			surface.SetMaterial( FC_HUD.White )
 			DrawCorrectFuckingPoly(tab)
 
-			local tab = CreateBorderedCircle(x - 275, y - 130, 8, 8, 100, 0, 10)
+			local tab = CreateBorderedCircle(x - 275, y - 135, 8, 8, 100, 0, 10)
 			surface.SetDrawColor(  team.GetColor(1) )
 			surface.SetMaterial( FC_HUD.White )
 			DrawCorrectFuckingPoly(tab)
 
-			draw.RoundedBoxEx(2, x - 260, y - 140, 150, 20, Color(0,0,0,150), false, true, false, true)
-			draw.SimpleText(LocalPlayer():Nick(), "FC_HUD_20", x - 175, y - 131, color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+			draw.RoundedBoxEx(2, x - 260, y - 145, 150, 20, Color(0,0,0,150), false, true, false, true)
+			draw.SimpleText(LocalPlayer():Nick(), "FC_HUD_20", x - 175, y - 136, color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
 			--HEALTH Cricle
 			if LocalPlayer():Alive() then
@@ -359,20 +360,29 @@ else
 			--Health Text inside circle
 			-- draw.SimpleText(LocalPlayer():Health(), "FC_HUD_40", x - 250, y - 67, Color(255,255,255,200), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-			--test
-			if LocalPlayer():Alive() then
+			if LocalPlayer():Alive() && LocalPlayer():GetEyeTrace().Entity then
 				local visible_entity = LocalPlayer():GetEyeTrace().Entity
 				local distance_from_object = 85
 				local player_to_entity_distance = LocalPlayer():GetPos():Distance(visible_entity:GetPos())
+				if ( input.IsKeyDown( KEY_F ) ) and ( visible_entity:GetClass() == 'payday_duffle_bag') and ( player_to_entity_distance < distance_from_object) then
+					--fake grey
+					local parts = NiceUV((ScrW())/2, ScrH()/2, 128, 128, 360, true )
+					surface.SetMaterial( FC_HUD.ProgressBG )
+					surface.SetDrawColor(255, 255, 255, 255)
+					surface.DrawPoly(parts)
 
-				if ( input.IsKeyDown( KEY_F ) || input.IsKeyDown( KEY_E ) ) and ( visible_entity:GetClass() == 'payday_duffle_bag') and ( player_to_entity_distance < distance_from_object) then
-					local parts = NiceUV((ScrW())/2, ScrH()/2, 128, 128, 360, 0, 100 / 100 * 360, true )
+					local parts = NiceUV((ScrW())/2, ScrH()/2, 128, 128, usekeybag, true )
 					surface.SetMaterial( FC_HUD.ProgressActive )
 					surface.SetDrawColor(255, 255, 255, 255)
 					surface.DrawPoly(parts)
+
+					if usekeybag < 360 then
+						usekeybag = usekeybag + USE_SPEED
+					end
+				else
+					usekeybag = 0
 				end
 			end
-				--
 
 		end
 
