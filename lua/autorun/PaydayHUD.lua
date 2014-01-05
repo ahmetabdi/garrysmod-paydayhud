@@ -11,6 +11,18 @@ if SERVER then
 	resource.AddSingleFile( "materials/paydayhud/hud_progress_active.png" )
 	resource.AddSingleFile( "materials/paydayhud/hud_progress_bg.png" )
 	resource.AddSingleFile( "materials/paydayhud/hud_health.png" )
+	resource.AddSingleFile( "materials/paydayhud/grenade.png" )
+	resource.AddSingleFile( "materials/paydayhud/zip_tie.png" )
+	resource.AddSingleFile( "materials/paydayhud/radio.png" )
+	resource.AddSingleFile( "materials/paydayhud/big_tab.png" )
+	resource.AddSingleFile( "materials/paydayhud/small_tab.png" )
+	resource.AddSingleFile( "materials/paydayhud/gun_1.png" )
+	resource.AddSingleFile( "materials/paydayhud/gun_2.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_fireselector_1.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_fireselector_2.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_fireselector_3.png" )
+	resource.AddSingleFile( "materials/paydayhud/hud_fireselector_4.png" )
+
 
 	for _, v in pairs( player.GetAll() ) do
 	 if ( v:Armor() == 0 ) then
@@ -52,6 +64,9 @@ else
 	surface.CreateFont( "FC_HUD_30", { font = "Aero Matics Display Regular", antialias = true, size = 30 } )
 	surface.CreateFont( "FC_HUD_40", { font = "Aero Matics Display Regular", antialias = true, size = 40 } )
 
+	surface.CreateFont( "AMMO_SMALL", { font = "Aero Matics Display Regular", antialias = true, size = 30 } )
+	surface.CreateFont( "AMMO_BIG", { font = "Aero Matics Display Regular", antialias = true, size = 41 } )
+
 	FC_HUD.White = Material("vgui/white")
 	FC_HUD.SmallHP = Material("paydayhud/paydayhud_health_small.png")
 	FC_HUD.BigHP = Material("paydayhud/paydayhud_health.png")
@@ -60,8 +75,24 @@ else
 	FC_HUD.ExtraBigAR = Material("paydayhud/paydayhud_armor_large.png")
 	FC_HUD.BigTestAR = Material("paydayhud/paydayhud_armor2.png")
 
+	FC_HUD.Grenade = Material("paydayhud/grenade.png")
+	FC_HUD.ZipTie = Material("paydayhud/zip_tie.png")
+	FC_HUD.Radio = Material("paydayhud/radio.png")
+
+	FC_HUD.Gun1 = Material("paydayhud/gun_1.png")
+	FC_HUD.Gun2 = Material("paydayhud/gun_2.png")
+
+	FC_HUD.BigTab = Material("paydayhud/big_tab.png")
+	FC_HUD.SmallTab = Material("paydayhud/small_tab.png")
+
 	FC_HUD.ProgressActive = Material("paydayhud/hud_progress_active.png")
 	FC_HUD.ProgressBG = Material("paydayhud/hud_progress_bg.png")
+
+	FC_HUD.FirstSelector1 = Material("paydayhud/hud_fireselector_1.png")
+	FC_HUD.FirstSelector2 = Material("paydayhud/hud_fireselector_2.png")
+	FC_HUD.FirstSelector3 = Material("paydayhud/hud_fireselector_3.png")
+	FC_HUD.FirstSelector4 = Material("paydayhud/hud_fireselector_4.png")
+
 
 	FC_HUD.BigHP = Material("paydayhud/hud_health.png")
 
@@ -281,12 +312,42 @@ else
 
 				if clip != -1 then
 
-					draw.RoundedBoxEx(2, x - 185, y - 110, 120, 47, Color(0,0,0,150), false, true, false, true)
-					draw.RoundedBoxEx(2, x - 185, y - 57, 120, 47, Color(0,0,0,150), false, true, false, true)
 
-					draw.RoundedBoxEx(2, x - 60, y - 40, 50, 30, Color(0,0,0,150), false, true, false, true)
-					draw.RoundedBoxEx(2, x - 60, y - 75, 50, 30, Color(0,0,0,150), false, true, false, true)
-					draw.RoundedBoxEx(2, x - 60, y - 110, 50, 30, Color(0,0,0,150), false, true, false, true)
+					-- Top Ammo Box
+					draw.RoundedBoxEx(2, x - 195, y - 110, 120, 47, Color(0,0,0,150), false, true, false, true)
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.Gun1 )
+					surface.DrawTexturedRect( x - 87, y - 110, 12, 47 )
+					-- Bottom Ammo Box
+					draw.RoundedBoxEx(2, x - 195, y - 57, 120, 47, Color(0,0,0,150), false, true, false, true)
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.Gun2 )
+					surface.DrawTexturedRect( x - 87, y - 57, 12, 47 )
+
+					-- Radio Icon
+					draw.RoundedBoxEx(2, x - 70, y - 110, 65, 30, Color(0,0,0,150), false, true, false, true)
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.Radio )
+					surface.DrawTexturedRect( x - 70, y - 110, 30, 30 )
+					-- ZipTie Icon
+					draw.RoundedBoxEx(2, x - 70, y - 75, 65, 30, Color(0,0,0,150), false, true, false, true)
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.ZipTie )
+					surface.DrawTexturedRect( x - 70, y - 75, 30, 30 )
+					-- Grenade Icon
+					draw.RoundedBoxEx(2, x - 70, y - 40, 65, 30, Color(0,0,0,150), false, true, false, true)
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.Grenade )
+					surface.DrawTexturedRect( x - 70, y - 40, 30, 30 )
+
+					--Fire Selector
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.FirstSelector3 )
+					surface.DrawTexturedRect( x - 85, y - 82, 8, 16 )
+
+					surface.SetDrawColor( 255, 255, 255, 255 )
+					surface.SetMaterial( FC_HUD.FirstSelector3 )
+					surface.DrawTexturedRect( x - 85, y - 30, 8, 16 )
 
 					local col1, col2 = Color(255,255,255,255), Color(255,255,255,255)
 
@@ -303,15 +364,24 @@ else
 					end
 
 					if clip < 10 then
+						clip = "00"..clip
+					else
 						clip = "0"..clip
 					end
+
 
 					if inv < 10 then
 						inv = "0"..inv
 					end
 
-					draw.SimpleText(clip, "FC_HUD_30", x - 140 - 8, y - 88, col1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-					draw.SimpleText(inv, "FC_HUD_30", x - 140 + 10, y - 88, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+					draw.SimpleText(clip, "AMMO_BIG", x - 130 - 8, y - 88, col1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+					draw.SimpleText(inv, "AMMO_SMALL", x - 145 + 10, y - 85, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+					--Radio
+					draw.SimpleText("00", "AMMO_SMALL", x - 40, y - 95, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+					--ZipTie
+					draw.SimpleText("00", "AMMO_SMALL", x - 40, y - 60, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+					--Grenade
+					draw.SimpleText("00", "AMMO_SMALL", x - 40, y - 25, col2, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 					surface.SetMaterial( FC_HUD.White )
 
 				end
@@ -334,11 +404,11 @@ else
 			--HEALTH Cricle
 			if LocalPlayer():Alive() then
 				--Fake grey behind
-				local parts = NiceUV(x - 250, y - 60, 64, 64, 360, 0, 100 / 100 * 360, true )
+				local parts = NiceUV(x - 260, y - 60, 64, 64, 360, 0, 100 / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigHP )
 				surface.SetDrawColor( 0, 0, 0, 125 )
 				surface.DrawPoly(parts)
-				local parts = NiceUV(x - 250, y - 60, 64, 64, math.Clamp(LocalPlayer():Health(), 0, 100) / 100 * 360, true )
+				local parts = NiceUV(x - 260, y - 60, 64, 64, math.Clamp(LocalPlayer():Health(), 0, 100) / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigHP )
 				surface.SetDrawColor( 255, 255, 255, 255 )
 				surface.DrawPoly(parts)
@@ -347,11 +417,11 @@ else
 			--ARMOUR Circle
 			if LocalPlayer():Alive() && LocalPlayer():Armor() > 0 then
 				--Fake grey behind
-				local parts = NiceUV(x - 250, y - 60, 92, 92, 360, 0, 100 / 100 * 360, true )
+				local parts = NiceUV(x - 260, y - 60, 92, 92, 360, 0, 100 / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigTestAR )
 				surface.SetDrawColor( 0, 0, 0, 125 )
 				surface.DrawPoly(parts)
-				local parts = NiceUV(x - 250, y - 60, 92, 92, math.Clamp(LocalPlayer():Armor(), 0, 100) / 100 * 360, true )
+				local parts = NiceUV(x - 260, y - 60, 92, 92, math.Clamp(LocalPlayer():Armor(), 0, 100) / 100 * 360, true )
 				surface.SetMaterial( FC_HUD.BigTestAR )
 				surface.SetDrawColor(255, 255, 255, 200)
 				surface.DrawPoly(parts)
